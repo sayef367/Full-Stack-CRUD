@@ -1,7 +1,7 @@
 import Link from "next/link";
 import AddEmployee from "../addEmployee";
 
-export default function Navbar() {
+export default function Navbar({submitHandler, submit, setSubmit}) {
   return (
     <div>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -16,14 +16,18 @@ export default function Navbar() {
                   className="btn btn-dark btn-sm rounded-5 fw-light" 
                   data-bs-toggle="modal" 
                   data-bs-target="#addEmployee">
-                  Add Employee
+                  <i className="bi bi-person-plus"/> Add Employee
                 </button>
               </li>
             </ul>
           </div>
         </div>
       </nav>
-      <AddEmployee />
+      <AddEmployee 
+        submitHandler={submitHandler}
+        submit={submit}
+        setSubmit={setSubmit}
+      />
     </div>
   );
 };

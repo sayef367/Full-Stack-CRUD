@@ -1,7 +1,6 @@
 "use client"
 
-export default function AddEmployee() {
-
+export default function AddEmployee({submitHandler, submit, setSubmit}) {
   return (
     <div className="modal fade" id="addEmployee" aria-labelledby="addEmployeeLabel" aria-hidden="true">
       <div className="modal-dialog">
@@ -11,12 +10,14 @@ export default function AddEmployee() {
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div className="modal-body">
-            <form>
+            <form onSubmit={submitHandler}>
               <div className="mb-3">
                 <label className="col-form-label">First Name</label>
                 <input 
                   type="text" 
-                  className="form-control" 
+                  className="form-control"
+                  value={submit.fname}
+                  onChange={(e) => setSubmit({...submit, fname: e.target.value})}
                 />
               </div>
               <div className="mb-3">
@@ -24,6 +25,8 @@ export default function AddEmployee() {
                 <input 
                   type="text" 
                   className="form-control"
+                  value={submit.lname}
+                  onChange={(e) => setSubmit({...submit, lname: e.target.value})}
                 />
               </div>
               <div className="mb-3">
@@ -31,6 +34,8 @@ export default function AddEmployee() {
                 <input 
                   type="text" 
                   className="form-control"
+                  value={submit.email}
+                  onChange={(e) => setSubmit({...submit, email: e.target.value})}
                 />
               </div>
               <div className="mb-3">
@@ -38,13 +43,18 @@ export default function AddEmployee() {
                 <input 
                   type="number" 
                   className="form-control"
+                  value={submit.phone}
+                  onChange={(e) => setSubmit({...submit, phone: e.target.value})}
                 />
               </div>
+              <button 
+                type="submit" 
+                className="btn btn-dark fw-light"
+                ><i className="bi bi-save"/> Submit
+              </button>
             </form>
           </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-dark fw-light">Submit</button>
-          </div>
+          
         </div>
       </div>
     </div>

@@ -5,40 +5,28 @@ import ListEmployee from "@/components/listEmployee";
 import DeleteModel from "@/components/deleteModel";
 import ViewModel from "@/components/viewModel";
 import { useState } from "react";
+import GetData from "@/hook/getData";
+import axios from "axios";
 
 export default function Home() {
-  const employees = [
-    {
-      id: 1,
-      name: 'Sayeful Islam',
-      email: 'sayeful@gmail.com',
-      phone: '0987654321',
-      status: false
-    },
-    {
-      id: 2,
-      name: 'Tanvir Islam',
-      email: 'tanvir@gmail.com',
-      phone: '1965654321',
-      status: false
-    },
-    {
-      id: 3,
-      name: 'Mir Islam',
-      email: 'mir@gmail.com',
-      phone: '9987654321',
-      status: false
-    },
-    {
-      id: 4,
-      name: 'Tuhin Hossain',
-      email: 'tuhin@gmail.com',
-      phone: '9987654321',
-      status: false
-    }
-  ];
   const [view, setView] = useState({});
   const [status, setStatus] = useState(false);
+  const [submit, setSubmit] = useState({fname: '',lname: '',email: '',phone: ''});
+  // Custom hooks
+  const [employees] = GetData();
+
+  // submit handelar
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    await axios.post('http://localhost:4000', {
+      ...submit,
+      status: true
+    })
+    .then((res) => {
+      alert(res.data.message);
+    });
+    setSubmit({fname: '',lname: '',email: '',phone: ''});
+  };
 
   const handelStatus = (condition) => {
     if (condition === true) {
@@ -51,15 +39,21 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
-      <div className="container">
+      {/* Top navbar */}
+      <Navbar 
+        submitHandler={submitHandler}
+        submit={submit}
+        setSubmit={setSubmit}
+      />
+      {/* Main section */}
+      <main className="container">
         <h1 className="text-center mt-4">All Employee List</h1>
-
-        <div className="row mt-4 justify-content-md-center">
+        {/* all employees list */}
+        <section className="row mt-4 justify-content-md-center">
           {
-            employees.map((employee) => {
+            employees.map((employee, id) => {
             return (
-              <div className="col-lg-4 col-md-6 col-sm-12 mb-4" key={employee.id}>
+              <div className="col-lg-4 col-md-6 col-sm-12 mb-4" key={id}>
                 <ListEmployee 
                   employee={employee} 
                   setView={setView} 
@@ -69,10 +63,13 @@ export default function Home() {
               </div>
             )})
           }
-        </div>
-      </div>
-      <ViewModel view={view} />
+        </section>
+      </main>
+      {/* Click data view and edit model */}
+      <ViewModel employee={view} />
+      {/* Click delete data model */}
       <DeleteModel />
+      {/* Bottom footer bar */}
       <Footer />
     </>
   );

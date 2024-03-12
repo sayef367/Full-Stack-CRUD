@@ -1,4 +1,4 @@
-export default function ViewModel({view}) {
+export default function ViewModel({employee}) {
   return (
     <div className="modal fade" id="exampleModalView" tabIndex="-1" aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered">
@@ -14,7 +14,7 @@ export default function ViewModel({view}) {
                 <input 
                   type="text" 
                   className="form-control fw-light" 
-                  value={view.name}
+                  value={employee.fname + ' ' + employee.lname}
                 />
               </div>
               <div className="mb-3">
@@ -22,7 +22,7 @@ export default function ViewModel({view}) {
                 <input 
                   type="text" 
                   className="form-control fw-light"
-                  value={view.email}
+                  value={employee.email}
                   disabled
                 />
               </div>
@@ -31,10 +31,17 @@ export default function ViewModel({view}) {
                 <input 
                   type="number" 
                   className="form-control fw-light"
-                  value={view.phone}
+                  value={employee.phone}
                 />
               </div>
             </form>
+          </div>
+          <div className="modal-footer">
+            <button 
+              type="button" 
+              className="btn btn-dark fw-light"
+              ><i className="bi bi-pencil-square"/> Update
+            </button>
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ export default function ViewEmployee({employee, setView, status, handelStatus}) 
   return (
     <div className="card shadow">
       <div className="card-body">
-        <h6 className="card-title">{employee.name}</h6>
+        <h6 className="card-title">{employee.fname + ' ' + employee.lname}</h6>
         <hr />
         <button type="button" 
           className="btn btn-outline-dark btn-sm me-1" 
@@ -14,7 +14,7 @@ export default function ViewEmployee({employee, setView, status, handelStatus}) 
         </button>
         <button type="button" 
           className="btn btn-outline-dark btn-sm me-1"
-          onClick={() => handelStatus(status)}
+          onClick={() => handelStatus(employee.status)}
           >{status === true ? 'Block' : 'Unblock'}
         </button>
         <button type="button" 
