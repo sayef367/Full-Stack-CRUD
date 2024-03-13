@@ -40,7 +40,7 @@ export default function ViewModel({updateHandel, update, setUpdate}) {
               </div>
               <button 
                 type="submit" 
-                className="btn btn-dark fw-light"
+                className="btn btn-dark btn-sm fw-light"
                 ><i className="bi bi-pencil-square"/> Update
               </button>
             </form>

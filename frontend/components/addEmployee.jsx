@@ -49,7 +49,7 @@ export default function AddEmployee({submitHandler, submit, setSubmit}) {
               </div>
               <button 
                 type="submit" 
-                className="btn btn-dark fw-light"
+                className="btn btn-dark btn-sm fw-light"
                 ><i className="bi bi-save"/> Submit
               </button>
             </form>
