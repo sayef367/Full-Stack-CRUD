@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function GetData() {
+export default function GetData(refresh) {
   const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function GetData() {
       });
     };
     fetchAPI();
-  },[]);
+  },[refresh]);
 
-  return [employees]
+  return [employees];
 };

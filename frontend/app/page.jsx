@@ -1,82 +1,25 @@
 "use client"
-import Footer from "@/components/layout/footer";
 import Navbar from "@/components/layout/Nav";
+import Footer from "@/components/layout/footer";
 import ListEmployee from "@/components/listEmployee";
 import DeleteModel from "@/components/deleteModel";
 import ViewModel from "@/components/viewModel";
+import GetDataHandeler from "@/hook/getData";
+import SubmitHandeler from "@/hook/submitHandel";
+import DeleteHandeler from "@/hook/deleteHandel";
+import StatusHandeler from "@/hook/statusHandel";
+import UpdateHandeler from "@/hook/updateHandel";
 import { useState } from "react";
-import GetData from "@/hook/getData";
-import axios from "axios";
 
 export default function Home() {
-  // const [view, setView] = useState({});
-  const [submit, setSubmit] = useState({fname: '',lname: '',email: '',phone: ''});
-  const [deleteId, setDeleteId] = useState(null);
-  const [update, setUpdate] = useState({name: '', phone: ''});
-  // Custom hooks
-  const [employees] = GetData();
+  const [refresh, setRefresh] = useState(0);
 
-  // submit handelar
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    await axios.post('http://localhost:4000', {
-      name: submit.fname + ' ' + submit.lname,
-      email: submit.email,
-      phone: submit.phone,
-      status: true
-    }).then((res) => {
-      alert(res.data.message);
-    });
-    setSubmit({fname: '',lname: '',email: '',phone: ''});
-  };
-
-  // delete handelar
-  const deleteHandel = async (id) => {
-    await axios.delete(`http://localhost:4000/${id}`)
-    .then((res) => {
-      alert(res.data.message);
-    })
-    .catch((error) => {
-      if(error.response.data.error === undefined){
-        alert('Internal error!');
-      } else {
-        alert(error.response.data.error);
-      };
-    });
-  };
-
-  // status update
-  const handelStatus = async (condition, statusId) => {
-    if (condition === true) {
-      const newStatus = {method: 'status', id: statusId, status: false};
-      await axios.put('http://localhost:4000', newStatus)
-      .then((res) => {
-        alert(res.data.message);
-      });
-    } else {
-      const newStatus = {method: 'status', id: statusId, status: true};
-      await axios.put('http://localhost:4000', newStatus)
-      .then((res) => {
-        alert(res.data.message);
-      });
-    };
-  };
-
-  // update employee data
-  const updateHandel = async (e) => {
-    e.preventDefault();
-    const updateData = {
-      method: 'update', 
-      id: update._id, 
-      name: update.name, 
-      phone: update.phone
-    };
-    await axios.put('http://localhost:4000', updateData)
-    .then((res) => {
-      alert(res.data.message);
-    });
-    console.log(update);
-  };
+  // All Custom hooks
+  const [employees] = GetDataHandeler(refresh);
+  const [submitHandler, submit, setSubmit] = SubmitHandeler();
+  const [deleteHandel, deleteId, setDeleteId] = DeleteHandeler();
+  const [handelStatus] = StatusHandeler(refresh, setRefresh);
+  const [updateHandel, update, setUpdate] = UpdateHandeler();
 
   return (
     <>
