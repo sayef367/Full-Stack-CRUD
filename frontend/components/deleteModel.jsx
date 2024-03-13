@@ -1,5 +1,5 @@
 
-export default function DeleteModel() {
+export default function DeleteModel({deleteId, deleteHandel}) {
 
   return (
     <div className="modal fade" id="exampleModalDelete" tabIndex="-1" aria-hidden="true">
@@ -15,6 +15,7 @@ export default function DeleteModel() {
               </button>
               <button type="button" 
                 className="btn btn-outline-dark btn-sm"
+                onClick={() => deleteHandel(deleteId)}
                 ><i className="bi bi-trash" />
               </button>
             </div>

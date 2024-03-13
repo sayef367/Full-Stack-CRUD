@@ -9,9 +9,10 @@ import GetData from "@/hook/getData";
 import axios from "axios";
 
 export default function Home() {
-  const [view, setView] = useState({});
-  const [status, setStatus] = useState(false);
+  // const [view, setView] = useState({});
   const [submit, setSubmit] = useState({fname: '',lname: '',email: '',phone: ''});
+  const [deleteId, setDeleteId] = useState(null);
+  const [update, setUpdate] = useState({name: '', phone: ''});
   // Custom hooks
   const [employees] = GetData();
 
@@ -19,22 +20,62 @@ export default function Home() {
   const submitHandler = async (e) => {
     e.preventDefault();
     await axios.post('http://localhost:4000', {
-      ...submit,
+      name: submit.fname + ' ' + submit.lname,
+      email: submit.email,
+      phone: submit.phone,
       status: true
-    })
-    .then((res) => {
+    }).then((res) => {
       alert(res.data.message);
     });
     setSubmit({fname: '',lname: '',email: '',phone: ''});
   };
 
-  const handelStatus = (condition) => {
+  // delete handelar
+  const deleteHandel = async (id) => {
+    await axios.delete(`http://localhost:4000/${id}`)
+    .then((res) => {
+      alert(res.data.message);
+    })
+    .catch((error) => {
+      if(error.response.data.error === undefined){
+        alert('Internal error!');
+      } else {
+        alert(error.response.data.error);
+      };
+    });
+  };
+
+  // status update
+  const handelStatus = async (condition, statusId) => {
     if (condition === true) {
-      setStatus(false);
+      const newStatus = {method: 'status', id: statusId, status: false};
+      await axios.put('http://localhost:4000', newStatus)
+      .then((res) => {
+        alert(res.data.message);
+      });
     } else {
-      setStatus(true);
+      const newStatus = {method: 'status', id: statusId, status: true};
+      await axios.put('http://localhost:4000', newStatus)
+      .then((res) => {
+        alert(res.data.message);
+      });
     };
-    console.log(condition)
+  };
+
+  // update employee data
+  const updateHandel = async (e) => {
+    e.preventDefault();
+    const updateData = {
+      method: 'update', 
+      id: update._id, 
+      name: update.name, 
+      phone: update.phone
+    };
+    await axios.put('http://localhost:4000', updateData)
+    .then((res) => {
+      alert(res.data.message);
+    });
+    console.log(update);
   };
 
   return (
@@ -47,7 +88,9 @@ export default function Home() {
       />
       {/* Main section */}
       <main className="container">
-        <h1 className="text-center mt-4">All Employee List</h1>
+        <h1 className="text-center mt-4">
+          {employees.length === 0 ? 'Empty Employee Data' : 'All Employee List'}
+        </h1>
         {/* all employees list */}
         <section className="row mt-4 justify-content-md-center">
           {
@@ -56,9 +99,9 @@ export default function Home() {
               <div className="col-lg-4 col-md-6 col-sm-12 mb-4" key={id}>
                 <ListEmployee 
                   employee={employee} 
-                  setView={setView} 
-                  status={status}
+                  setUpdate={setUpdate}
                   handelStatus={handelStatus}
+                  setDeleteId={setDeleteId}
                 />
               </div>
             )})
@@ -66,9 +109,16 @@ export default function Home() {
         </section>
       </main>
       {/* Click data view and edit model */}
-      <ViewModel employee={view} />
+      <ViewModel 
+        updateHandel={updateHandel}
+        update={update}
+        setUpdate={setUpdate}
+      />
       {/* Click delete data model */}
-      <DeleteModel />
+      <DeleteModel 
+        deleteId={deleteId}
+        deleteHandel={deleteHandel}
+      />
       {/* Bottom footer bar */}
       <Footer />
     </>

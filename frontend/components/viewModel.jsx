@@ -1,4 +1,6 @@
-export default function ViewModel({employee}) {
+"use client"
+
+export default function ViewModel({updateHandel, update, setUpdate}) {
   return (
     <div className="modal fade" id="exampleModalView" tabIndex="-1" aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered">
@@ -8,13 +10,14 @@ export default function ViewModel({employee}) {
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div className="modal-body">
-            <form>
+            <form onSubmit={updateHandel}>
               <div className="mb-3">
                 <label className="col-form-label">Full Name</label>
                 <input 
                   type="text" 
                   className="form-control fw-light" 
-                  value={employee.fname + ' ' + employee.lname}
+                  value={update.name}
+                  onChange={(e) => setUpdate({...update, name: e.target.value})}
                 />
               </div>
               <div className="mb-3">
@@ -22,7 +25,7 @@ export default function ViewModel({employee}) {
                 <input 
                   type="text" 
                   className="form-control fw-light"
-                  value={employee.email}
+                  value={update.email}
                   disabled
                 />
               </div>
@@ -31,17 +34,16 @@ export default function ViewModel({employee}) {
                 <input 
                   type="number" 
                   className="form-control fw-light"
-                  value={employee.phone}
+                  value={update.phone}
+                  onChange={(e) => setUpdate({...update, phone: e.target.value})}
                 />
               </div>
+              <button 
+                type="submit" 
+                className="btn btn-dark fw-light"
+                ><i className="bi bi-pencil-square"/> Update
+              </button>
             </form>
-          </div>
-          <div className="modal-footer">
-            <button 
-              type="button" 
-              className="btn btn-dark fw-light"
-              ><i className="bi bi-pencil-square"/> Update
-            </button>
           </div>
         </div>
       </div>
